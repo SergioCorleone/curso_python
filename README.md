@@ -1,2 +1,5 @@
-# curso_python
-Curso de python de desarollo IV impartido en Universidad de Sonora
+#TicTacToe
+A  game of tic-tac-toe implemented in python
+
+## Author 
+Developed by Sergio Zepeda Caro

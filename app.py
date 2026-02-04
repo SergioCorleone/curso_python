@@ -1,9 +1,8 @@
 """
 Docstring for game_logic.app
 """
-from game_logic import game
 from menu import display_menu
-from game import two_players
+from game import play_game
 
 def main():
     """
@@ -12,11 +11,12 @@ def main():
     while True:
         choice = display_menu()
         if choice == 1:
-            print("In progress")
+            play_game(1)
         elif choice == 2:
-            two_players()
+            play_game(2)
         elif choice == 3:
             print("Exiting the game. Goodbye!")
+            break
 
 if __name__ == "__main__":
-    two_players()
+    main()

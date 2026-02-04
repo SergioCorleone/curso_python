@@ -1,9 +1,10 @@
 """
 Docstring for game_logic
-Author: Sergio Zepeda Caro
+Author: Federico Cirett Galán
 Here goes the game logic for Tictactoe
 """
 import board
+import random
 
 def check_winner(d:dict, combo_list:list)->bool:
     """
@@ -14,7 +15,7 @@ def check_winner(d:dict, combo_list:list)->bool:
             return True
     return False
 
-def game() -> str:
+def game(num_players:int)->str:
     """
     Here lives the main game loop
     """
@@ -32,46 +33,63 @@ def game() -> str:
     w_player = ""
     while turns < 9 and not winner:
         board.display_board(dboard)
-        valid_move = False
-        while not valid_move:
-            valid_move = board.player_turn(current_player, dboard)
+        if num_players == 2:
+            two_players(current_player, dboard)
+        elif num_players == 1:
+            one_player(current_player, dboard)
         turns += 1
-        winner = check_winner(dboard,combo_list)
+        winner = check_winner(dboard, combo_list)
         if winner:
             w_player = current_player
-        
         if current_player == x_player:
             current_player = o_player
         else:
             current_player = x_player
     board.display_board(dboard)
     return w_player
-    
-def two_players():
-    """
-    two player game loop
+
+
+def play_game(players=2)->None:
+    """ Two players game loop
     """
     playing = True
-    score = {'X': 0 , 'O' : 0, 'Ties': 0}
+    score = {'X':0, 'O':0, 'Ties':0}
     while playing:
         
-        winner = game()
+        winner = game(players)
+      
         if len(winner) > 0:
-            print(f"Winner: Player{winner}")
+            print(f"Winner: Player {winner}")
         else:
-            print("It's a tie")
+            print("It's a tie!")
             winner = 'Ties'
         score[winner] += 1
-        replay = input("Do you want to play again [y/n]: ").strip().lower()
+        replay = input("Do you want to play again? (y/n): ").strip().lower()
         if replay != 'y':
             playing = False
         print(f"Score: X = {score['X']}, O = {score['O']}, Ties = {score['Ties']}")
 
 
-    
-if __name__ == "__main__":
-    win = game()
-    if len(win) > 0:
-        print(f"Winner: Player {win}")
+def two_players(current_player:str,dboard:dict)->None:
+     valid_move = False
+     while not valid_move:
+            valid_move = board.player_turn(current_player, dboard)
+
+def one_player(current_player:str,dboard:dict)->None:
+    valid_move = False
+    x_player = 'X'
+    o_player = 'O'
+    if current_player == x_player:
+            while not valid_move:
+                valid_move = board.player_turn(current_player, dboard)
     else:
-        print(f"it's a tie")
+            print("Computer's turn:")
+            while not valid_move:
+                move = random.randint(0,8)
+                if str(dboard[move]) == str(move):
+                    dboard[move] = o_player
+                    valid_move = True
+   
+
+if __name__ == "__main__":
+    play_game(1)
